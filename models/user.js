@@ -57,7 +57,6 @@ const User = sequelize.define('users', {
 
 sequelize.authenticate()
   .then(() => {
-    console.log('Connection has been established successfully.');
     return User.sync({ force: false });
   })
   .then(() => {
