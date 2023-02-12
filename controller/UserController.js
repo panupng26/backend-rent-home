@@ -57,4 +57,21 @@ exports.logout = async (req, res) => {
         message: "Internal Server Error"
       });
     }
-  }
+}
+
+exports.getProfile = async (req, res) => {
+    try {
+        const id  = req.params.id
+        const profile = await userService.getProfile(id);
+        // console.log(profile)
+        return res.status(200).json({
+            status: true,
+            data: profile
+        });
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({
+            message: "Error i can't find user Or it's not register in website"
+        })
+    }
+}

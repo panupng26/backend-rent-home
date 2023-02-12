@@ -56,6 +56,19 @@ class UserService {
             throw err;
         }
     }
+    async getProfile(id) {
+      try {
+        const user = await User.findOne({ where: { user_id: id } })
+        if(user) {
+          const { password, ...userWithoutPassword } = user.dataValues;
+          return userWithoutPassword;
+        }
+        throw new Error("User not found");
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+    }
 }
 
 module.exports = new UserService();

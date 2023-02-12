@@ -8,8 +8,8 @@ const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD
   logging: false
 });
 
-const ReportEstate = sequelize.define('reportEstate', {
-  report_id: {
+const Review = sequelize.define('review', {
+  review_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -25,6 +25,10 @@ const ReportEstate = sequelize.define('reportEstate', {
   description: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  rate_score: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
   }
 }, {
     timestamps: false
@@ -32,13 +36,13 @@ const ReportEstate = sequelize.define('reportEstate', {
 
 sequelize.authenticate()
   .then(() => {
-    return ReportEstate.sync({ force: false });
+    return Review.sync({ force: false });
   })
   .then(() => {
-    // console.log("ReportEstate table created/synced successfully");
+    // console.log("Review table created/synced successfully");
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
   });
 
-module.exports = ReportEstate;
+module.exports = Review;

@@ -4,41 +4,58 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
-  dialect: 'mariadb',
-  logging: false
+  dialect: 'mariadb'
 });
 
-const ReportEstate = sequelize.define('reportEstate', {
-  report_id: {
+const Conversation = require('./conversation');
+
+// Define Message model
+const Message = sequelize.define('message', {
+  message_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  estate_id: {
+  conversation_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    references: {
+      model: Conversation,
+      key: 'conversation_id',
+    },
+  },
+  sender_id: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  user_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  description: {
+  message: {
     type: Sequelize.STRING,
     allowNull: false,
-  }
+  },
+  timestamp: {
+    type: Sequelize.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.NOW,
+  },
 }, {
     timestamps: false
 });
 
+// Define the association between Message and Conversation
+Message.belongsTo(Conversation, {
+  foreignKey: 'conversation_id',
+  onDelete: 'cascade',
+});
+
 sequelize.authenticate()
   .then(() => {
-    return ReportEstate.sync({ force: false });
+    return Message.sync({ force: false });
   })
   .then(() => {
-    // console.log("ReportEstate table created/synced successfully");
+    // console.log("Message table created/synced successfully");
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
   });
 
-module.exports = ReportEstate;
+module.exports = Message;
