@@ -16,7 +16,7 @@ exports.registerUser = async (req, res) => {
             password,
             phone,
         });
-        const token = jwt.sign({ user_id: user.id, email }, process.env.TOKEN_KEY, { expiresIn: "12h" });
+        const token = jwt.sign({ user_id: user.user_id, email }, process.env.TOKEN_KEY, { expiresIn: "12h" });
         user.token = token;
         return res.status(201).json(user);
     } catch (err) {
@@ -35,7 +35,7 @@ exports.loginUser = async (req, res) => {
             return res.status(400).json({ status: false, error: true, message: 'Invalid email or password' })
         }
         const user = await userService.loginUser(email, password);
-        console.log('user:', user)
+
         return res.status(200).json(user)
     } catch (err) {
         return res.status(400).json({ status: false, error: true, message: "Invalid token" })
@@ -62,8 +62,7 @@ exports.logout = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
     try {
-        const id  = req.params.id
-        const profile = await userService.getProfile(id);
+        const profile = await userService.getProfile(req.user.user_id);
         return res.status(200).json({
             status: true,
             data: profile

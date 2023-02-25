@@ -14,7 +14,7 @@ router.post('/logout',verifyToken, userController.logout)
 router.get('/', async (req, res) => {
     res.status(200).json({ status: true, error: [], message: "Finish server" })
 })
-router.get('/getprofile/:id',verifyToken , userController.getProfile)
+router.get('/getprofile',verifyToken , userController.getProfile)
 router.post('/edit/profile/:id', verifyToken , userController.editProfile)
 router.post('/')
 

@@ -12,7 +12,7 @@ class UserService {
             throw new Error("User already exists. Please Login");
         }
         const encryptedPassword = await bcrypt.hash(password, 10);
-        return await User.create({
+        const user = await User.create({
             first_name,
             last_name,
             email,
@@ -20,13 +20,21 @@ class UserService {
             phone,
             is_active: 0
         });
+        if(user) {
+          const { password, ...userWithoutPassword } = user.dataValues;
+          return userWithoutPassword;
+        }else {
+          throw new Error('Couldn\'t create user')
+        }
+        
+
     }
     async loginUser(email, password) {
         try {
           const user = await User.findOne({ where: { email: email } });
           if (user && await bcrypt.compare(password, user.password)) {
             const token = await jwt.sign(
-              { user_id: user.id, email },
+              { user_id: user.user_id, email },
               process.env.TOKEN_KEY,
               {
                 expiresIn: "12h"
@@ -35,7 +43,8 @@ class UserService {
             user.is_active = true;
             await user.save();
             user.dataValues.token = token;
-            return user;
+            const { password, ...userWithoutPassword } = user.dataValues;
+            return userWithoutPassword;
           }
           throw new Error("Invalid email or password");
         } catch (err) {
