@@ -64,10 +64,33 @@ class UserService {
           return userWithoutPassword;
         }
         throw new Error("User not found");
-    } catch (err) {
+      } catch (err) {
+          console.log(err);
+          throw err;
+      }
+    }
+    async editProfile(id, profileData) {
+      try {
+        const user = await User.findOne({ where: { user_id: id } });
+  
+        if (!user) {
+          throw new Error("User not found");
+        }
+  
+        user.first_name = profileData.first_name || user.first_name;
+        user.last_name = profileData.last_name || user.last_name;
+        user.email = profileData.email || user.email;
+        user.phone = profileData.phone || user.phone;
+        user.Line_id = profileData.Line_id || user.Line_id;
+  
+        await user.save();
+        const { password, ...updatedUser } = user.dataValues;
+  
+        return updatedUser;
+      } catch (err) {
         console.log(err);
         throw err;
-    }
+      }
     }
 }
 

@@ -4,7 +4,8 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
-  dialect: 'mariadb'
+  dialect: 'mariadb',
+  logging: false
 });
 
 const Conversation = require('./conversation');

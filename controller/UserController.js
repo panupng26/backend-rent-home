@@ -24,7 +24,7 @@ exports.registerUser = async (req, res) => {
             return res.status(409).json({ status: false, error: true, message: err.message });
         }
         console.error(err);
-        return res.status(500).json({ error: true, message: "Internal server error" });
+        return res.status(500).json({ status: false, error: true, message: "Internal server error" });
     }
 }
 
@@ -54,6 +54,7 @@ exports.logout = async (req, res) => {
     } catch (err) {
       console.log(err);
       return res.status(500).json({
+        status: false,
         message: "Internal Server Error"
       });
     }
@@ -63,15 +64,35 @@ exports.getProfile = async (req, res) => {
     try {
         const id  = req.params.id
         const profile = await userService.getProfile(id);
-        // console.log(profile)
         return res.status(200).json({
             status: true,
             data: profile
         });
     } catch (err) {
-        console.error(err)
         return res.status(500).json({
+            status: false,
             message: "Error i can't find user Or it's not register in website"
         })
     }
 }
+
+
+exports.editProfile = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const profileData = req.body;
+  
+      const updatedProfile = await userService.editProfile(id, profileData);
+  
+      return res.status(200).json({
+        status: true,
+        message: "Profile updated successfully",
+        data: updatedProfile,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: false,
+        message: "Error updating user profile",
+      });
+    }
+  };
