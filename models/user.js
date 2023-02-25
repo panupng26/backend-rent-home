@@ -40,9 +40,10 @@ const User = sequelize.define('users', {
     allowNull: false,
     defaultValue: true,
   },
-  created_at: {
-    type: Sequelize.DATE,
-    allowNull: true,
+  role: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 'USER',
   },
   last_login: {
     type: Sequelize.DATE,
@@ -53,7 +54,7 @@ const User = sequelize.define('users', {
     allowNull: true,
   },
 }, {
-    timestamps: false
+    timestamps: true
 });
 
 sequelize.authenticate()

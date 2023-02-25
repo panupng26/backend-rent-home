@@ -18,7 +18,8 @@ class UserService {
             email,
             password: encryptedPassword,
             phone,
-            is_active: 0
+            is_active: 0,
+            role: 'USER'
         });
         if(user) {
           const { password, ...userWithoutPassword } = user.dataValues;
@@ -56,7 +57,7 @@ class UserService {
         try {
             const user = await User.findOne({ where: { email: email } })
             if(user) {
-                await user.update({ is_active: false });
+                await user.update({ is_active: false});
                 return true;
             }
             throw new Error("User not found");

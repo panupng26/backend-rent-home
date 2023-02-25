@@ -44,9 +44,7 @@ exports.loginUser = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        const { email } = req.body
-        // return res.status(200).json(req.body)
-      const user = await userService.logoutUser(email);
+      const user = await userService.logoutUser(req.user.email);
       return res.status(200).json({
         message: "User logged out successfully",
         user: user
