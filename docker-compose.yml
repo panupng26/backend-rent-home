@@ -2,24 +2,27 @@ version: '3'
 networks:
     backendbank:
         driver: bridge
-
+volumes:
+    mariadb:
+        driver: local
+    phpmyadmin:
+        driver: local
 services:
   backend:
     image: backend_rent
-    volumes:
-      - ./:/usr/src/backend-rent-home
     ports:
       - 3001:3001
-    restart: always
     networks:
       - backendbank
 
   mariadb:
     image: mariadb:latest
-    container_name: mariadb_bankend_rent_home
-    restart: always
+    container_name: mariadb_backend
+    volumes:
+      - ~/.backendrent/data/mariadb:/var/lib/mysql
     ports:
       - 3306:3306
+    restart: always
     environment: 
       TZ: Asia/Bangkok
       MYSQL_ROOT_PASSWORD: mysql_root_password

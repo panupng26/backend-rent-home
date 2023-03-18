@@ -30,6 +30,8 @@ exports.connect = async () => {
             database: MARIADB_DATABASE,
             port: MARIADB_PORT
         });
+        console.log('mariadb-host: ', MARIADB_HOST)
+        console.log('pool: ', pool)
         console.log('Successfully Connected to database');
         return pool;
     } catch (err) {
