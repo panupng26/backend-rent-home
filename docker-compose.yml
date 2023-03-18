@@ -1,0 +1,43 @@
+version: '3'
+networks:
+    backendbank:
+        driver: bridge
+
+services:
+  backend:
+    image: backend_rent
+    volumes:
+      - ./:/usr/src/backend-rent-home
+    ports:
+      - 3001:3001
+    restart: always
+    networks:
+      - backendbank
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_bankend_rent_home
+    restart: always
+    ports:
+      - 3306:3306
+    environment: 
+      TZ: Asia/Bangkok
+      MYSQL_ROOT_PASSWORD: mysql_root_password
+    networks:
+      - backendbank
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_backend_rent_home
+    restart: always
+    environment:
+        PMA_ARBITRARY: 1
+        PMA_HOST: mariadb
+        MYSQL_ROOT_PASSWORD: mysql_root_password
+        UPLOAD_LIMIT: 1G
+    ports:
+        - 8080:80
+    depends_on:
+        - mariadb
+    networks:
+        - backendbank

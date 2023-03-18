@@ -36,7 +36,7 @@ exports.loginUser = async (req, res) => {
         }
         const user = await userService.loginUser(email, password);
 
-        return res.status(200).json(user)
+        return res.status(200).json({ status: true, data: user, message: 'User successfully' })
     } catch (err) {
         return res.status(400).json({ status: false, error: true, message: "Invalid token" })
     }
