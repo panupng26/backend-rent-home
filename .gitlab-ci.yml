@@ -1,0 +1,21 @@
+image: node
+stages:
+  - build
+
+cache:
+  path:
+    - node_modules/
+
+default:
+  before_script:
+    - global before script
+
+build: 
+  stage: build
+  only:
+    - tags
+  before_script:
+  script:
+    - npm install
+    - npm run test
+  after_script:
