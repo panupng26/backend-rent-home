@@ -13,7 +13,7 @@ class EstateService {
             estate_bathrooms: inputReq.estate_bathrooms,
             estate_garage: inputReq.estate_garage,
             estate_description: inputReq.estate_description,
-            estate_image: inputReq.estate_image,
+            estate_image: JSON.stringify(inputReq.estate_image),
             estate_verify: inputReq.estate_verify,
             estate_user_id: userid,
             lat: inputReq.lat,
