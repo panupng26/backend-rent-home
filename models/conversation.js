@@ -5,7 +5,14 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
   dialect: 'mariadb',
-  logging: false
+  logging: false,
+  define: {
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
+  }
 });
 
 const User = require('./user'); 
@@ -30,17 +37,12 @@ const Conversations = sequelize.define('conversations', {
       key: 'user_id'
     }
   }
-}, {
-    timestamps: false
 });
 
 Conversations.belongsTo(User, { foreignKey: 'user_one', targetKey: 'user_id' });
 Conversations.belongsTo(User, { foreignKey: 'user_two', targetKey: 'user_id' });
 
 sequelize.authenticate()
-  .then(() => {
-    return Conversations.sync({ force: false });
-  })
   .then(() => {
     // console.log("Conversations table created/synced successfully");
   })

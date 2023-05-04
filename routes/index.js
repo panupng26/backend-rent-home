@@ -15,16 +15,17 @@ router.get('/', async (req, res) => {
     res.status(200).json({ status: true, error: [], message: "Finish server" })
 })
 router.get('/getprofile',verifyToken , userController.getProfile)
-router.post('/edit/profile/:id', verifyToken , userController.editProfile)
+router.post('/edit/profile', verifyToken , userController.editProfile)
 router.post('/')
 
 // reportcontroller
 router.post('/report/:id', validateIdReport, reportController.reportEstate)
 
 // estatecontroller
-router.post('/create/estate', estateController.createEstate)
-router.post('/update/estate/:id', estateController.updateEstate)
-router.get('/estate/:id', estateController.getEstateById);
+router.post('/create/estate', verifyToken, estateController.createEstate)
+router.post('/update/estate/:id', verifyToken, estateController.updateEstate)
+router.get('/estate/:id', estateController.getEstateById)
+router.post('/get/list/estate', verifyToken, estateController.getListEstateUser)
 
 // uploadImageController
 router.post('/uploadimage', uploadImageController.uploadImages)

@@ -76,10 +76,8 @@ exports.getProfile = async (req, res) => {
 
 exports.editProfile = async (req, res) => {
     try {
-      const id = req.params.id;
       const profileData = req.body;
-  
-      const updatedProfile = await userService.editProfile(id, profileData);
+      const updatedProfile = await userService.editProfile(req.user.user_id, profileData);
   
       return res.status(200).json({
         status: true,
@@ -89,7 +87,7 @@ exports.editProfile = async (req, res) => {
     } catch (err) {
       return res.status(500).json({
         status: false,
-        message: "Error updating user profile",
+        message: err,
       });
     }
   };

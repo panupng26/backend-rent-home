@@ -50,9 +50,6 @@ Message.belongsTo(Conversation, {
 
 sequelize.authenticate()
   .then(() => {
-    return Message.sync({ force: false });
-  })
-  .then(() => {
     // console.log("Message table created/synced successfully");
   })
   .catch(err => {

@@ -5,7 +5,14 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
   dialect: 'mariadb',
-  logging: false
+  logging: false,
+  define: {
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
+  }
 });
 
 const Review = sequelize.define('review', {
@@ -30,8 +37,6 @@ const Review = sequelize.define('review', {
     type: Sequelize.FLOAT,
     allowNull: false,
   }
-}, {
-    timestamps: false
 });
 
 sequelize.authenticate()

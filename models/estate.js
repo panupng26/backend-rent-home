@@ -5,11 +5,18 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
   dialect: 'mariadb',
-  logging: false
+  logging: false,
+  define: {
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
+  }
 });
 
 const User = require('./user');
-const Estate = sequelize.define('estate', {
+const Estate = sequelize.define('estates', {
   estate_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -23,12 +30,8 @@ const Estate = sequelize.define('estate', {
     type: Sequelize.STRING(255),
     allowNull: false,
   },
-  estate_location: {
-    type: Sequelize.STRING(255),
-    allowNull: false,
-  },
   estate_price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.STRING(255),
     allowNull: false,
   },
   estate_area: {
@@ -56,8 +59,14 @@ const Estate = sequelize.define('estate', {
     allowNull: true,
   },
   estate_status: {
-    type: Sequelize.ENUM('available', 'sold'),
+    type: Sequelize.ENUM('available', 'sold', 'suspended', 'rented'),
     allowNull: false,
+    defaultValue: 'available',
+  },
+  estate_verify: {
+    type: Sequelize.ENUM('verfiy', 'non'),
+    allowNull: true,
+    defaultValue: 'non',
   },
   estate_user_id: {
     type: Sequelize.INTEGER,
@@ -67,42 +76,36 @@ const Estate = sequelize.define('estate', {
         key: 'user_id'
     }
   },
-  gps_latitude: {
-    type: Sequelize.DECIMAL(10, 8),
+  lat: {
+    type: Sequelize.STRING(60),
     allowNull: false,
   },
-  gps_longitude: {
-    type: Sequelize.DECIMAL(11, 8),
+  lng: {
+    type: Sequelize.STRING(60),
     allowNull: false,
   },
-  province_id: {
-    type: Sequelize.INTEGER,
+  province: {
+    type: Sequelize.STRING(100),
     allowNull: false,
   },
-  geographies_id: {
-    type: Sequelize.INTEGER,
+  state: {
+    type: Sequelize.STRING(100),
     allowNull: false,
   },
-  amphures_id: {
-    type: Sequelize.INTEGER,
+  districts: {
+    type: Sequelize.STRING(100),
     allowNull: false,
   },
-  districts_id: {
-    type: Sequelize.INTEGER,
+  postcode: {
+    type: Sequelize.STRING(100),
     allowNull: false,
   },
-}, {
-  tableName: 'estate',
-  timestamps: true,
 });
 
 sequelize.authenticate()
-  .then(() => {
-    return Estate.sync({ force: false });
-  })
-  .then(() => {
-    console.log("Estate table created/synced successfully");
-  })
+  // .then(() => {
+  //   return Estate.sync({ force: false });
+  // })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
   });

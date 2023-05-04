@@ -5,7 +5,14 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
   dialect: 'mariadb',
-  logging: false
+  logging: false,
+  define: {
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
+  }
 });
 
 // Define User model
@@ -53,14 +60,12 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     allowNull: true,
   },
-}, {
-    timestamps: true
 });
 
 sequelize.authenticate()
-  .then(() => {
-    return User.sync({ force: false });
-  })
+  // .then(() => {
+  //   return User.sync({ force: false });
+  // })
   .then(() => {
     // console.log("User table created/synced successfully");
   })
