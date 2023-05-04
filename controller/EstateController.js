@@ -68,26 +68,6 @@ function validateCreateEstate(input) {
             status: false,
             error: 'estate_area is required'
         }
-    } else if (!input.estate_bedrooms) {
-        return {
-            status: false,
-            error: 'estate_bedrooms is required'
-        }
-    } else if (!input.estate_bathrooms) {
-        return {
-            status: false,
-            error: 'estate_bathrooms is required'
-        }
-    } else if (!input.estate_garage) {
-        return {
-            status: false,
-            error: 'estate_garage is required'
-        }
-    } else if (!input.estate_description) {
-        return {
-            status: false,
-            error: 'estate_description is required'
-        }
     } else if (!input.province) {
         return {
             status: false,
