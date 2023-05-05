@@ -73,6 +73,30 @@ class EstateService {
         throw new Error(error.message);
       }
     }
+    async getListEstateByAdmin(currentPage = 1, pageSize = 25, filter_text = '') {
+      try {
+        const offset = (currentPage - 1) * pageSize;
+        const where = {
+          [Op.or]: [
+            { estate_name: { [Op.like]: `%${filter_text}%` } },
+            { estate_type: { [Op.like]: `%${filter_text}%` } },
+            { estate_price: { [Op.like]: `%${filter_text}%` } },
+            { province: { [Op.like]: `%${filter_text}%` } },
+            { state: { [Op.like]: `%${filter_text}%` } },
+            { districts: { [Op.like]: `%${filter_text}%` } },
+          ],
+        };
+        const { count, rows } = await Estate.findAndCountAll({
+          where,
+          limit: pageSize,
+          offset,
+        });
+        const totalPages = Math.ceil(count / pageSize);
+        return { totalItems: count, totalPages, currentPage, estates: rows };
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
 }
 
 module.exports = new EstateService();

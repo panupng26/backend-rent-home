@@ -17,7 +17,10 @@ exports.createEstate = async (req, res) => {
 exports.updateEstate = async (req, res) => {
     const estateId = req.params.id;
     const estateData = req.body;
-  
+    inputValidate = validateCreateEstate(estateData)
+    if (inputValidate.status === false) {
+        return res.status(400).json({ status: false, error: inputValidate.error });
+    }
     try {
       const estate = await estateService.updateEstate(estateId, estateData);
       return res.status(200).json({ status: true, message: 'Estate updated successfully', estate });
@@ -39,12 +42,21 @@ exports.getEstateById = async (req, res) => {
 };
 exports.getListEstateUser = async (req, res) => {
     try {
-        const { page, filter_text } = req.body
-        const estate = await estateService.getListEstateByUser(req.user.user_id, page, selfPerpage, filter_text);
-        return res.status(200).json({ status: true, estate});
+      const { page, filter_text } = req.body
+      const estate = await estateService.getListEstateByUser(req.user.user_id, page, selfPerpage, filter_text);
+      return res.status(200).json({ status: true, estate});
     } catch (error) {
         return res.status(500).json({ status: false, error: error.message });
     }
+}
+exports.getListALLEstate = async (req, res) => {
+    try {
+        const { page, filter_text } = req.body
+        const estate = await estateService.getListEstateByAdmin(page, selfPerpage, filter_text);
+        return res.status(200).json({ status: true, estate});
+      } catch (error) {
+          return res.status(500).json({ status: false, error: error.message });
+      }
 }
 
 function validateCreateEstate(input) {

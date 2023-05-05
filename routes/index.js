@@ -26,6 +26,7 @@ router.post('/create/estate', verifyToken, estateController.createEstate)
 router.post('/update/estate/:id', verifyToken, estateController.updateEstate)
 router.get('/estate/:id', estateController.getEstateById)
 router.post('/get/list/estate', verifyToken, estateController.getListEstateUser)
+router.post('/admin/list/estate', verifyToken, estateController.getListALLEstate)
 
 // uploadImageController
 router.post('/uploadimage', uploadImageController.uploadImages)
