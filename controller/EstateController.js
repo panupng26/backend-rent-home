@@ -31,7 +31,7 @@ exports.updateEstate = async (req, res) => {
 exports.getEstateById = async (req, res) => {
     try {
       const { id } = req.params;
-      const estate = await estateService.getEstateById(id);
+      const estate = await estateService.getEstateById(parseInt(id));
       if (!estate) {
         return res.status(404).json({ status: false, error: 'Estate not found' });
       }
@@ -54,11 +54,32 @@ exports.getListALLEstate = async (req, res) => {
         const { page, filter_text } = req.body
         const estate = await estateService.getListEstateByAdmin(page, selfPerpage, filter_text);
         return res.status(200).json({ status: true, estate});
-      } catch (error) {
+    } catch (error) {
           return res.status(500).json({ status: false, error: error.message });
-      }
+    }
 }
-
+exports.deleteEstateById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const result = await estateService.deleteEstateById(id);
+        return res.status(200).json({
+            status: true,
+            message: 'Estate deleted successfully',
+            data: result
+        });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.filterAllEstate = async (req, res) => {
+    try {
+        const filterAll = req.body
+        const estate = await estateService.getListEstateAll(filterAll.page, 9, filterAll);
+        return res.status(200).json({ status: true, estate});
+    } catch (error) {
+          return res.status(500).json({ status: false, error: error.message });
+    }
+}
 function validateCreateEstate(input) {
     if (!input.estate_name) {
         return {
@@ -79,6 +100,11 @@ function validateCreateEstate(input) {
         return {
             status: false,
             error: 'estate_area is required'
+        }
+    } else if(!input.address) {
+        return {
+            status: false,
+            error: 'address is required'
         }
     } else if (!input.province) {
         return {

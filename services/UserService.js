@@ -38,7 +38,7 @@ class UserService {
               { user_id: user.user_id, email },
               process.env.TOKEN_KEY,
               {
-                expiresIn: "12h"
+                expiresIn: "7d"
               }
             );
             user.is_active = true;

@@ -91,3 +91,20 @@ exports.editProfile = async (req, res) => {
       });
     }
   };
+
+exports.getUserById = async (req, res) => {
+  try {
+    const { id } = req.params
+    const user = await userService.getProfile(id)
+    return res.status(200).json({
+      status: true,
+      message: "Profile successfully",
+      user
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: err,
+    });
+  }
+}

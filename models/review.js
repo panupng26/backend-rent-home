@@ -14,8 +14,8 @@ const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD
     paranoid: true
   }
 });
-
-const Review = sequelize.define('review', {
+const User = require('./user')
+const Review = sequelize.define('reviews', {
   review_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -38,6 +38,8 @@ const Review = sequelize.define('review', {
     allowNull: false,
   }
 });
+
+Review.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 sequelize.authenticate()
   .then(() => {

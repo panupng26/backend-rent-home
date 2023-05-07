@@ -51,7 +51,7 @@ module.exports = {
         allowNull: false
       },
       estate_verify: {
-        type: Sequelize.ENUM('verfiy', 'non'),
+        type: Sequelize.ENUM('verify', 'non'),
         allowNull: true,
       },
       estate_user_id: {
@@ -65,6 +65,10 @@ module.exports = {
       lng: {
         type: Sequelize.STRING(60),
         allowNull: false,
+      },
+      address: {
+        type: Sequelize.STRING(255),
+        allowNull: true,
       },
       province: {
         type: Sequelize.STRING(100),

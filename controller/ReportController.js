@@ -1,19 +1,24 @@
 const reportService = require('../services/ReportService');
 
 exports.reportEstate = async (req, res) => {
-    const { user_id, description } = req.body;
+    const { description } = req.body;
     const estate_id = req.params.id;
-    if (!user_id) {
-        return res.status(400).json({ error: 'user_id is required' });
-    }
     if (!description) {
-        return res.status(400).json({ error: 'description is required' });
+        return res.status(400).json({ status: false, error: 'description is required' });
     }
     
     try {
-        const report = await reportService.createReport(estate_id, user_id, description);
-        return res.status(201).json({ message: 'Report created successfully', report });
+        const report = await reportService.createReport(estate_id, req.user.user_id, description);
+        return res.status(201).json({ status: true, message: 'Report created successfully', report });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ status: false, error: error.message });
     }
 };
+exports.reportAll = async (req, res) => {
+    try {
+        const report = await reportService.getAllReport();
+        return res.status(201).json({ status: true, report });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}

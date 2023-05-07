@@ -76,6 +76,10 @@ const Estate = sequelize.define('estates', {
         key: 'user_id'
     }
   },
+  address: {
+    type: Sequelize.STRING(255),
+    allowNull: true,
+  },
   lat: {
     type: Sequelize.STRING(60),
     allowNull: false,
