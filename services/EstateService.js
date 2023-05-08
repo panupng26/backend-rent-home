@@ -99,6 +99,35 @@ class EstateService {
         throw new Error(error.message);
       }
     }
+    async ListNotSuspended(currentPage = 1, pageSize = selfPerpage, filter_text = '') {
+      try {
+        const offset = (currentPage - 1) * pageSize;
+        const where = {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { estate_name: { [Op.like]: `%${filter_text}%` } },
+                { estate_type: { [Op.like]: `%${filter_text}%` } },
+                { estate_price: { [Op.like]: `%${filter_text}%` } },
+                { province: { [Op.like]: `%${filter_text}%` } },
+                { state: { [Op.like]: `%${filter_text}%` } },
+                { districts: { [Op.like]: `%${filter_text}%` } },
+              ],
+            },
+            { estate_status: { [Op.ne]: 'suspended' } },
+          ],
+        };
+        const { count, rows } = await Estate.findAndCountAll({
+          where,
+          limit: pageSize,
+          offset,
+        });
+        const totalPages = Math.ceil(count / pageSize);
+        return { totalItems: count, totalPages, currentPage, estates: rows };
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
     async deleteEstateById(id) {
       try {
           const estate = await Estate.findByPk(id);
@@ -171,6 +200,108 @@ class EstateService {
         });
         const totalPages = Math.ceil(count / pageSize);
         return { totalItems: count, totalPages, currentPage, estates: rows };
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+    async updateSuspendedEstate(estateId) {
+      try {
+        const estate = await Estate.findByPk(estateId);
+        if (!estate) {
+          throw new Error('Estate not found');
+        }
+        const response = await estate.update({ estate_status: 'suspended' });
+        return response
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+    async ListOnlySuspended(currentPage = 1, pageSize = selfPerpage, filter_text = '') {
+      try {
+        const offset = (currentPage - 1) * pageSize;
+        const where = {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { estate_name: { [Op.like]: `%${filter_text}%` } },
+                { estate_type: { [Op.like]: `%${filter_text}%` } },
+                { estate_price: { [Op.like]: `%${filter_text}%` } },
+                { province: { [Op.like]: `%${filter_text}%` } },
+                { state: { [Op.like]: `%${filter_text}%` } },
+                { districts: { [Op.like]: `%${filter_text}%` } },
+              ],
+            },
+            { estate_status: { [Op.eq]: 'suspended' } },
+          ],
+        };
+        const { count, rows } = await Estate.findAndCountAll({
+          where,
+          limit: pageSize,
+          offset,
+        });
+        const totalPages = Math.ceil(count / pageSize);
+        return { totalItems: count, totalPages, currentPage, estates: rows };
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+
+    async updateCancelSuspended(estateId) {
+      try {
+        const estate = await Estate.findByPk(estateId);
+        if (!estate) {
+          throw new Error('Estate not found');
+        }
+        const response = await estate.update({ estate_status: 'available' });
+        return response
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+    async getRandomEstateTypeCondo() {
+      try {
+        const estates = await Estate.findAll({
+          where: { estate_type: 'คอนโด' },
+          order: Sequelize.literal('random()'),
+          limit: 6
+        });
+        return estates;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+    async getRandomEstateTypeTownHouse() {
+      try {
+        const estates = await Estate.findAll({
+          where: { estate_type: 'ทาวน์เฮ้าส์' },
+          order: Sequelize.literal('random()'),
+          limit: 6
+        });
+        return estates;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+    async getRandomEstateTypeTownHouse() {
+      try {
+        const estates = await Estate.findAll({
+          where: { estate_type: 'ทาวน์เฮ้าส์' },
+          order: Sequelize.literal('random()'),
+          limit: 6
+        });
+        return estates;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+    async getRandomEstateTypeHome() {
+      try {
+        const estates = await Estate.findAll({
+          where: { estate_type: 'บ้านเดี่ยว' },
+          order: Sequelize.literal('random()'),
+          limit: 6
+        });
+        return estates;
       } catch (error) {
         throw new Error(error.message);
       }

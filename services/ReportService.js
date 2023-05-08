@@ -11,18 +11,26 @@ class ReportService {
             throw new Error(error.message);
         }
     };
-    async getAllReport() {
+    async getAllReport(currentPage = 1, pageSize = 8) {
         try {
-            const reports = await ReportEstate.findAll({
-                include: [{ model: Estate, as: 'estate' }, 
-                { model: User, as: 'user', attributes: { exclude: ['password'] } } ],
-                attributes: { exclude: ['estate_id', 'user_id', 'deleted_at', 'updated_at'] }
+            const offset = (currentPage - 1) * pageSize;
+            const reports = await ReportEstate.findAndCountAll({
+                include: [
+                    { model: User, as: 'user', attributes: { exclude: ['password'] } },
+                    { model: Estate, as: 'estate', include: [{ model: User, as: 'user', attributes: { exclude: ['password'] }  }] }
+                ],
+                attributes: { exclude: ['estate_id', 'user_id', 'deleted_at', 'updated_at'] },
+                limit: pageSize,
+                offset: offset,
+                order: [['created_at', 'DESC']]
             });
-            return reports
+            const totalPages = Math.ceil(reports.count / pageSize);
+            return { totalItems: reports.count, totalPages, currentPage, reports: reports.rows }
         } catch (error) {
             throw new Error(error.message);
         }
     }
+    
 }
 
 module.exports = new ReportService();

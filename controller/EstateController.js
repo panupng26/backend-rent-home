@@ -49,6 +49,15 @@ exports.getListEstateUser = async (req, res) => {
         return res.status(500).json({ status: false, error: error.message });
     }
 }
+exports.getListNotSuspended = async (req, res) => {
+    try {
+        const { page, filter_text } = req.body
+        const estate = await estateService.ListNotSuspended(page, selfPerpage, filter_text);
+        return res.status(200).json({ status: true, estate});
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
 exports.getListALLEstate = async (req, res) => {
     try {
         const { page, filter_text } = req.body
@@ -78,6 +87,57 @@ exports.filterAllEstate = async (req, res) => {
         return res.status(200).json({ status: true, estate});
     } catch (error) {
           return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.suspendedEstateById = async (req, res) => {
+    try {
+        const estateId = req.params.id;
+        const estate = await estateService.updateSuspendedEstate(estateId);
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.getOnlySuspendedList = async (req, res) => {
+    try {
+        const { page, filter_text } = req.body
+        const estate = await estateService.ListOnlySuspended(page, selfPerpage, filter_text);
+        return res.status(200).json({ status: true, estate});
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.cancelSuspendedById = async (req, res) => {
+    try {
+        const estateId = req.params.id;
+        const estate = await estateService.updateCancelSuspended(estateId);
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.getCondoCarousel = async (req, res) => {
+    try {
+        const estate = await estateService.getRandomEstateTypeCondo();
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.getTownHouseCarousel = async (req, res) => {
+    try {
+        const estate = await estateService.getRandomEstateTypeTownHouse();
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.getHomeCarousel = async (req, res) => {
+    try {
+        const estate = await estateService.getRandomEstateTypeHome();
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
     }
 }
 function validateCreateEstate(input) {

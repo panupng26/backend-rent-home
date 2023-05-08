@@ -16,7 +16,8 @@ exports.reportEstate = async (req, res) => {
 };
 exports.reportAll = async (req, res) => {
     try {
-        const report = await reportService.getAllReport();
+        const { currentPage } = req.body
+        const report = await reportService.getAllReport(currentPage);
         return res.status(201).json({ status: true, report });
     } catch (error) {
         return res.status(500).json({ status: false, error: error.message });

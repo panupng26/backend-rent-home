@@ -106,6 +106,8 @@ const Estate = sequelize.define('estates', {
   },
 });
 
+Estate.belongsTo(User, { foreignKey: 'estate_user_id', as: 'user' });
+
 sequelize.authenticate()
   // .then(() => {
   //   return Estate.sync({ force: false });
