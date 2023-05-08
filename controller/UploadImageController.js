@@ -1,11 +1,42 @@
 const multer = require('multer');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 // Set storage engine
+// const storage = multer.diskStorage({
+//   destination: './public/images',
+//   filename: function(req, file, cb) {
+//     const uniqueId = uuidv4();
+//     cb(null, `${file.fieldname}-${Date.now()}-${uniqueId}${path.extname(file.originalname)}`);
+//   }
+// });
+
 const storage = multer.diskStorage({
   destination: './public/images',
   filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    const uniqueId = uuidv4();
+    const ext = path.extname(file.originalname);
+    const filename = `${file.fieldname}-${uniqueId}${ext}`;
+    
+    // Check if a file with the same name already exists
+    fs.access('./public/images/' + filename, (err) => {
+      if (!err) {
+        // File with the same name already exists, generate a new unique ID
+        return storage.getFilename(req, file, cb);
+      } else {
+        // File name is unique, save the file
+        return cb(null, filename);
+      }
+    });
+  },
+  getFilename: function(req, file, cb) {
+    const uniqueId = uuidv4();
+    const ext = path.extname(file.originalname);
+    const filename = `${file.fieldname}-${uniqueId}${ext}`;
+    
+    // Call the callback function with the new filename
+    cb(null, filename);
   }
 });
 
