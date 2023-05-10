@@ -43,7 +43,7 @@ module.exports = {
         allowNull: false,
       },
       estate_image: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       estate_status: {
