@@ -1,5 +1,6 @@
 const Estate = require('../models/estate');
 const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
 
 const selfPerpage = 8
 class EstateService {
@@ -262,7 +263,7 @@ class EstateService {
       try {
         const estates = await Estate.findAll({
           where: { estate_type: 'คอนโด' },
-          order: Sequelize.literal('random()'),
+          order: Sequelize.literal('RAND()'),
           limit: 6
         });
         return estates;
@@ -274,19 +275,7 @@ class EstateService {
       try {
         const estates = await Estate.findAll({
           where: { estate_type: 'ทาวน์เฮ้าส์' },
-          order: Sequelize.literal('random()'),
-          limit: 6
-        });
-        return estates;
-      } catch (error) {
-        throw new Error(error.message);
-      }
-    }
-    async getRandomEstateTypeTownHouse() {
-      try {
-        const estates = await Estate.findAll({
-          where: { estate_type: 'ทาวน์เฮ้าส์' },
-          order: Sequelize.literal('random()'),
+          order: Sequelize.literal('RAND()'),
           limit: 6
         });
         return estates;
@@ -298,7 +287,7 @@ class EstateService {
       try {
         const estates = await Estate.findAll({
           where: { estate_type: 'บ้านเดี่ยว' },
-          order: Sequelize.literal('random()'),
+          order: Sequelize.literal('RAND()'),
           limit: 6
         });
         return estates;

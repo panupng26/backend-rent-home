@@ -16,6 +16,8 @@ router.get('/', async (req, res) => {
 })
 router.get('/getprofile',verifyToken , userController.getProfile)
 router.post('/edit/profile', verifyToken , userController.editProfile)
+router.post('/edit/imageprofile', verifyToken , userController.editImageProfile)
+
 router.get('/user/:id', userController.getUserById)
 
 // reportcontroller

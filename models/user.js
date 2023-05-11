@@ -60,6 +60,10 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  image_profile: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
 });
 
 sequelize.authenticate()

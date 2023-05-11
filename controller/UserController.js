@@ -92,6 +92,24 @@ exports.editProfile = async (req, res) => {
     }
   };
 
+exports.editImageProfile = async (req, res) => {
+  try {
+    const { image_profile } = req.body;
+    const updatedProfile = await userService.editImageProfile(req.user.user_id, image_profile);
+
+    return res.status(200).json({
+      status: true,
+      message: "Profile updated successfully",
+      data: updatedProfile,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: err,
+    });
+  }
+}
+
 exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params

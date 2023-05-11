@@ -103,6 +103,22 @@ class UserService {
         throw err;
       }
     }
+    async editImageProfile(id, images_profile) {
+      try {
+        const user = await User.findByPk(id);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        user.image_profile = images_profile
+        await user.save();
+        const { password, ...updatedUser } = user.dataValues;
+        return updatedUser;
+      } catch (err) {
+        console.log(err)
+        throw err;
+      }
+    }
+
 }
 
 module.exports = new UserService();
