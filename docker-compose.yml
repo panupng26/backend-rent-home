@@ -9,7 +9,9 @@ volumes:
         driver: local
 services:
   backend:
-    image: backend_rent
+    build:
+        context: .
+        dockerfile: Dockerfile
     ports:
       - 3001:3001
     networks:
