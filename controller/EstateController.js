@@ -28,6 +28,19 @@ exports.updateEstate = async (req, res) => {
       return res.status(500).json({ status: false, error: error.message });
     }
 }
+exports.updateStatusByEstateId = async (req, res) => {
+    const estateId = req.params.id;
+    const { estate_status } = req.body;
+    if(!estate_status) {
+        return res.status(400).json({ status: false, message: 'Required estate_status' });
+    }
+    try {
+        const estate = await estateService.updateStatusEstate(estateId, estate_status, req.user.user_id)
+        return res.status(200).json({ status: true, message: 'Estate updated successfully', estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
 exports.getEstateById = async (req, res) => {
     try {
       const { id } = req.params;

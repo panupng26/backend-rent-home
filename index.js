@@ -18,20 +18,26 @@ server.listen(port, () => {
     console.log(`Server runing at http://localhost:${port}`)
 })
 
+const socketService = require('./services/SocketService')
 io.on('connection', (socket) => {
+    // console.log('loging socket:', socket)
     console.log(`User connected: ${socket.id}`);
     
     socket.on('connection', (data) => {
-        console.log('user one: ', data.userone);
+        socketService.updateIsActive(socket.id, data.user_id)
+        const form_update = {
+            socket_id: socket.id,
+            data: data.user_id
+        }
+        io.emit('connection',form_update);
     });
   
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (data) => {
+      console.log('data disconnected: ', data.user_id)
       console.log(`User disconnected: ${socket.id}`);
     });
   
     socket.on('sendMessage', (conversationId, senderId, message) => {
-      // Store the message in the database
-      // ...
       console.log('conversationId: ', conversationId)
       console.log('senderId: ', senderId)
       console.log('message: ', message)

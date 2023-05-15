@@ -41,6 +41,7 @@ router.post('/list/estate', estateController.filterAllEstate)
 router.post('/suspended/:id', verifyToken, estateController.suspendedEstateById)
 router.post('/admin/list/onlysuspended', verifyToken, estateController.getOnlySuspendedList)
 router.post('/admin/cancel/suspended/:id', verifyToken, estateController.cancelSuspendedById)
+router.post('/update/status/:id', verifyToken, estateController.updateStatusByEstateId)
 
 router.get('/carousel/condo', estateController.getCondoCarousel)
 router.get('/carousel/townhouse', estateController.getTownHouseCarousel)

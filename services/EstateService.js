@@ -43,6 +43,27 @@ class EstateService {
           throw new Error(error.message);
         }
     }
+    async updateStatusEstate(estate_id, estate_status, estate_user_id) {
+      try {
+        const estate = await Estate.findOne({
+          where: {
+            estate_id: estate_id,
+            estate_user_id: estate_user_id,
+          },
+        });
+    
+        if (!estate) {
+          throw new Error('Estate not found');
+        }
+    
+        estate.estate_status = estate_status;
+        await estate.save();
+    
+        return estate;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
     async getEstateById(id) {
         try {
           const estate = await Estate.findByPk(id);
