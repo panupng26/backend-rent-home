@@ -22,7 +22,7 @@ exports.getReviewByEstateId = async (req, res) => {
         if (averageRateScore % 1 >= 0.5) {
             roundedAverageRateScore += 1;
         }
-        return res.status(201).json({ status: true, message: "Review created successfully", review, average_rate: roundedAverageRateScore})
+        return res.status(201).json({ status: true, message: "Review created successfully", review, average_rate: roundedAverageRateScore, float_average_rate: averageRateScore })
     } catch (error) {
         return res.status(500).json({ status: false, error: error.message })
     }
