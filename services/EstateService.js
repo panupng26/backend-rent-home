@@ -67,6 +67,9 @@ class EstateService {
     async getEstateById(id) {
         try {
           const estate = await Estate.findByPk(id);
+          if (estate && estate.estate_status === 'suspended') {
+            throw new Error('Estate is suspended.');
+          }
           return estate;
         } catch (error) {
           throw new Error(error.message);
@@ -214,11 +217,13 @@ class EstateService {
               ? { estate_garage: filterAll.estate_garage }
               : null,
           ].filter((v) => v != null),
+          estate_status: { [Op.ne]: 'suspended' },
         };
         const { count, rows } = await Estate.findAndCountAll({
           where,
           limit: pageSize,
           offset,
+          order: [['estate_status', 'ASC']],
         });
         const totalPages = Math.ceil(count / pageSize);
         return { totalItems: count, totalPages, currentPage, estates: rows };
@@ -267,7 +272,6 @@ class EstateService {
         throw new Error(error.message);
       }
     }
-
     async updateCancelSuspended(estateId) {
       try {
         const estate = await Estate.findByPk(estateId);
@@ -282,8 +286,9 @@ class EstateService {
     }
     async getRandomEstateTypeCondo() {
       try {
+        
         const estates = await Estate.findAll({
-          where: { estate_type: 'คอนโด' },
+          where: { estate_type: 'คอนโด', estate_status: { [Op.eq]: 'available' }},
           order: Sequelize.literal('RAND()'),
           limit: 6
         });
@@ -295,7 +300,7 @@ class EstateService {
     async getRandomEstateTypeTownHouse() {
       try {
         const estates = await Estate.findAll({
-          where: { estate_type: 'ทาวน์เฮ้าส์' },
+          where: { estate_type: 'ทาวน์เฮ้าส์', estate_status: { [Op.eq]: 'available' } },
           order: Sequelize.literal('RAND()'),
           limit: 6
         });
@@ -307,7 +312,7 @@ class EstateService {
     async getRandomEstateTypeHome() {
       try {
         const estates = await Estate.findAll({
-          where: { estate_type: 'บ้านเดี่ยว' },
+          where: { estate_type: 'บ้านเดี่ยว', estate_status: { [Op.eq]: 'available' } },
           order: Sequelize.literal('RAND()'),
           limit: 6
         });
