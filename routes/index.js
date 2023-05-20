@@ -5,6 +5,7 @@ const reportController = require('../controller/ReportController');
 const estateController = require('../controller/EstateController');
 const reviewController = require('../controller/ReviewController');
 const uploadImageController = require('../controller/UploadImageController');
+const chatController = require('../controller/ChatController');
 const verifyToken = require('../middleware/auth');
 
 // usercontroller
@@ -42,6 +43,10 @@ router.post('/suspended/:id', verifyToken, estateController.suspendedEstateById)
 router.post('/admin/list/onlysuspended', verifyToken, estateController.getOnlySuspendedList)
 router.post('/admin/cancel/suspended/:id', verifyToken, estateController.cancelSuspendedById)
 router.post('/update/status/:id', verifyToken, estateController.updateStatusByEstateId)
+
+// chatcontroller
+router.post('/chat/to/owner/:id', verifyToken, chatController.chatToOwnerEstate)
+router.get('/get/chat/', verifyToken, chatController.chatUserId)
 
 router.get('/carousel/condo', estateController.getCondoCarousel)
 router.get('/carousel/townhouse', estateController.getTownHouseCarousel)

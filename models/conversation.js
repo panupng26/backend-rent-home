@@ -16,6 +16,7 @@ const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD
 });
 
 const User = require('./user'); 
+const Message = require('./message');
 
 const Conversations = sequelize.define('conversations', {
   conversation_id: {
@@ -39,8 +40,11 @@ const Conversations = sequelize.define('conversations', {
   }
 });
 
-Conversations.belongsTo(User, { foreignKey: 'user_one', targetKey: 'user_id' });
-Conversations.belongsTo(User, { foreignKey: 'user_two', targetKey: 'user_id' });
+Conversations.belongsTo(User, { foreignKey: 'user_one', as: 'user_one_info' });
+Conversations.belongsTo(User, { foreignKey: 'user_two', as: 'user_two_info' });
+
+Conversations.hasMany(Message, { foreignKey: 'conversation_id', as: 'messages' });
+Message.belongsTo(Conversations, { foreignKey: 'conversation_id', as: 'messages' });
 
 sequelize.authenticate()
   .then(() => {

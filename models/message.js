@@ -5,13 +5,21 @@ const { MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_
 const sequelize = new Sequelize(MARIADB_DATABASE, MARIADB_USER, MARIADB_PASSWORD, {
   host: MARIADB_HOST,
   dialect: 'mariadb',
-  logging: false
+  logging: false,
+  define: {
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true
+  }
 });
 
 const Conversation = require('./conversation');
+const User = require('./user');
 
 // Define Message model
-const Message = sequelize.define('message', {
+const Message = sequelize.define('messages', {
   message_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -25,28 +33,21 @@ const Message = sequelize.define('message', {
       key: 'conversation_id',
     },
   },
-  sender_id: {
+  user_id: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    references: {
+      model: User,
+      key: 'user_id'
+    }
   },
   message: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
-  },
-  timestamp: {
-    type: Sequelize.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
-}, {
-    timestamps: false
+  }
 });
 
-// Define the association between Message and Conversation
-Message.belongsTo(Conversation, {
-  foreignKey: 'conversation_id',
-  onDelete: 'cascade',
-});
+
+Message.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 sequelize.authenticate()
   .then(() => {

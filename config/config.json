@@ -3,21 +3,21 @@
     "username": "root",
     "password": "mysql_root_password",
     "database": "backend_rent_home",
-    "host": "188.166.244.29",
+    "host": "localhost",
     "dialect": "mariadb"
   },
   "test": {
     "username": "root",
     "password": "mysql_root_password",
     "database": "backend_rent_home",
-    "host": "188.166.244.29",
+    "host": "localhost",
     "dialect": "mariadb"
   },
   "production": {
     "username": "root",
     "password": "mysql_root_password",
     "database": "backend_rent_home",
-    "host": "188.166.244.29",
+    "host": "localhost",
     "dialect": "mariadb"
   }
 }
