@@ -12,8 +12,7 @@ const io = require('socket.io')(server, {
 })
 const redis = require('redis');
 const redisClient = redis.createClient({
-    host: 'redis',
-    port: 6379,
+    url: 'redis://redis:6379',
     legacyMode: true
 });
 
