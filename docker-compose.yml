@@ -16,7 +16,7 @@ services:
     ports:
       - 3306:3306
     restart: always
-    environment: 
+    environment:
       TZ: Asia/Bangkok
       MYSQL_ROOT_PASSWORD: mysql_root_password
     networks:
@@ -32,17 +32,17 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
-        PMA_ARBITRARY: 1
-        PMA_HOST: mariadb
-        MYSQL_ROOT_PASSWORD: mysql_root_password
-        UPLOAD_LIMIT: 1G
+      PMA_ARBITRARY: 1
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: mysql_root_password
+      UPLOAD_LIMIT: 1G
     ports:
-        - 8080:80
+      - 8080:80
     depends_on:
-        - mariadb
+      - mariadb
     networks:
-        - backendbank
+      - backendbank
 
 networks:
   backendbank:
-    driver: bridge
+    external: true
