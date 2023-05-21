@@ -153,6 +153,22 @@ exports.getHomeCarousel = async (req, res) => {
         return res.status(500).json({ status: false, error: error.message });
     }
 }
+exports.getAllStatusEstate = async (req, res) => {
+    try {
+        const estate = await estateService.getEstateStatusUser();
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
+exports.getIdStatusEstate = async (req, res) => {
+    try {
+        const estate = await estateService.getEstateStatusById(req.user.user_id);
+        return res.status(200).json({ status: true, estate });
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
+    }
+}
 function validateCreateEstate(input) {
     if (!input.estate_name) {
         return {

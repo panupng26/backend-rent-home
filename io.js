@@ -6,7 +6,7 @@ const createServer = () => {
   const server = http.createServer(app)
   const socketIO = io(server, {
     cors: {
-      origin: process.env.URL_FRONTEND || 'http://localhost:8085',
+      origin: process.env.URL_FRONTEND || 'http://rentcentral.online',
       methods: ["GET", "POST"],
       allowedHeaders: ["content-type"],
       credentials: true

@@ -31,6 +31,8 @@ router.get('/review/:id' , reviewController.getReviewByEstateId)
 
 
 // estatecontroller
+router.post('/admin/status/estate', verifyToken, estateController.getAllStatusEstate)
+router.post('/status/estate', verifyToken, estateController.getIdStatusEstate)
 router.post('/create/estate', verifyToken, estateController.createEstate)
 router.post('/update/estate/:id', verifyToken, estateController.updateEstate)
 router.get('/estate/:id', estateController.getEstateById)
@@ -47,6 +49,7 @@ router.post('/update/status/:id', verifyToken, estateController.updateStatusByEs
 // chatcontroller
 router.post('/chat/to/owner/:id', verifyToken, chatController.chatToOwnerEstate)
 router.get('/get/chat/', verifyToken, chatController.chatUserId)
+router.post('/1on1/:id', verifyToken, chatController.getChat1ON1)
 
 router.get('/carousel/condo', estateController.getCondoCarousel)
 router.get('/carousel/townhouse', estateController.getTownHouseCarousel)

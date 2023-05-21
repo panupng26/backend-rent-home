@@ -321,6 +321,35 @@ class EstateService {
         throw new Error(error.message);
       }
     }
+    async getEstateStatusUser() {
+      try {
+        const statusCounts = await Estate.findAll({
+          attributes: ['estate_status', [Sequelize.fn('COUNT', Sequelize.col('estate_status')), 'count']],
+          group: ['estate_status'],
+          raw: true
+        });
+    
+        return statusCounts;
+      } catch (error) {
+        console.error('Error retrieving estate status counts:', error);
+        throw error;
+      }
+    }
+    async getEstateStatusById(estate_user_id) {
+      try {
+        const statusCounts = await Estate.findAll({
+          where: { estate_user_id: estate_user_id},
+          attributes: ['estate_status', [Sequelize.fn('COUNT', Sequelize.col('estate_status')), 'count']],
+          group: ['estate_status'],
+          raw: true
+        });
+    
+        return statusCounts;
+      } catch (error) {
+        console.error('Error retrieving estate status counts:', error);
+        throw error;
+      }
+    }
 }
 
 module.exports = new EstateService();

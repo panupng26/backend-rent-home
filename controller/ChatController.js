@@ -23,5 +23,16 @@ exports.chatUserId = async (req, res) => {
         return res.status(500).json({ status: false, error: err.message });
     }
 }
+exports.getChat1ON1 = async (req, res) => {
+    try {
+        const userId = req.user.user_id
+        const paramId = req.params.id
+        const chat = await chatService.getMessage1ON1(userId, paramId);
+        return res.status(201).json({ status: true, chat: chat });
+    } catch (err) {
+        console.error('Error creating conversation:', err);
+        return res.status(500).json({ status: false, error: err.message });
+    }
+}
 
 
