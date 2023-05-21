@@ -32,7 +32,7 @@ services:
       - backendbank
 
   redis:
-    image: redis:alpine
+    image: redis
     container_name: redis-backend
     ports:
       - 6379:6379
