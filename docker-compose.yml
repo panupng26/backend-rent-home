@@ -16,6 +16,8 @@ services:
       - 3001:3001
     networks:
       - backendbank
+    depends_on:
+      - redis
 
   mariadb:
     image: mariadb:latest
@@ -39,8 +41,6 @@ services:
     restart: always
     networks:
       - backendbank
-    depends_on:
-      - backend
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
