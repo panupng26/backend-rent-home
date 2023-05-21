@@ -7,7 +7,7 @@ services:
     depends_on:
       - redis
     networks:
-      - backendbank
+      - backend-rent-home_backendbank
 
   mariadb:
     image: mariadb:latest
@@ -20,7 +20,7 @@ services:
       TZ: Asia/Bangkok
       MYSQL_ROOT_PASSWORD: mysql_root_password
     networks:
-      - backendbank
+      - backend-rent-home_backendbank
 
   redis:
     image: redis
@@ -41,8 +41,8 @@ services:
     depends_on:
       - mariadb
     networks:
-      - backendbank
+      - backend-rent-home_backendbank
 
 networks:
-  backendbank:
+  backend-rent-home_backendbank:
     external: true
