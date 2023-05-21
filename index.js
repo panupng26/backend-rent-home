@@ -30,6 +30,13 @@ const ChatService = require('./services/ChatService')
 
 redisClient.connect()
 
+redisClient.on('connect', () => {
+  console.log('Connected to Redis server');
+});
+
+redisClient.on('error', (err) => {
+  console.error('Error connecting to Redis:', err);
+});
 
 io.on('connection', (socket) => {
     // console.log('loging socket:', socket)
