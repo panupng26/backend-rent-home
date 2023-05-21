@@ -1,27 +1,16 @@
 version: '3'
-networks:
-    backendbank:
-        driver: bridge
-volumes:
-    mariadb:
-        driver: local
-    phpmyadmin:
-        driver: local
 services:
   backend:
-    build:
-        context: .
-        dockerfile: Dockerfile
+    build: .
     ports:
       - 3001:3001
-    networks:
-      - backendbank
     depends_on:
       - redis
+    networks:
+      - backendbank
 
   mariadb:
     image: mariadb:latest
-    container_name: mariadb_backend
     volumes:
       - ~/.backendrent/data/mariadb:/var/lib/mysql
     ports:
@@ -35,17 +24,13 @@ services:
 
   redis:
     image: redis
-    container_name: redis-backend
     ports:
       - 6379:6379
-    restart: always
     networks:
       - backendbank
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_backend_rent_home
-    restart: always
     environment:
         PMA_ARBITRARY: 1
         PMA_HOST: mariadb
@@ -57,3 +42,7 @@ services:
         - mariadb
     networks:
         - backendbank
+
+networks:
+  backendbank:
+    driver: bridge

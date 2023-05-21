@@ -11,7 +11,7 @@ const io = require('socket.io')(server, {
     }
 })
 const redis = require('redis');
-const redisClient = redis.createClient({ legacyMode: true });
+const redisClient = redis.createClient(process.env.MEMCACHE_HOST, { legacyMode: true });
 
 const { API_PORT } = process.env
 const port = process.env.PORT || API_PORT
