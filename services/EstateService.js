@@ -48,7 +48,6 @@ class EstateService {
             estate_description: inputReq.estate_description,
             estate_image: JSON.stringify(inputReq.estate_image),
             estate_verify: inputReq.estate_verify,
-            estate_user_id: userid,
             lat: inputReq.lat,
             lng: inputReq.lng,
             address: inputReq.address,
