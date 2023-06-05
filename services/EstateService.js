@@ -31,13 +31,32 @@ class EstateService {
           throw new Error(error.message);
         }
     }
-    async updateEstate(estateId, estateData) {
+    async updateEstate(estateId, inputReq) {
         try {
           const estate = await Estate.findByPk(estateId);
           if (!estate) {
             throw new Error('Estate not found');
           }
-          const updatedEstate = await estate.update(estateData);
+          const updatedEstate = await estate.update({
+            estate_name: inputReq.estate_name,
+            estate_type: inputReq.estate_type,
+            estate_price: inputReq.estate_price,
+            estate_area: inputReq.estate_area,
+            estate_bedrooms: inputReq.estate_bedrooms,
+            estate_bathrooms: inputReq.estate_bathrooms,
+            estate_garage: inputReq.estate_garage,
+            estate_description: inputReq.estate_description,
+            estate_image: JSON.stringify(inputReq.estate_image),
+            estate_verify: inputReq.estate_verify,
+            estate_user_id: userid,
+            lat: inputReq.lat,
+            lng: inputReq.lng,
+            address: inputReq.address,
+            province: inputReq.province,
+            state: inputReq.state,
+            districts: inputReq.districts,
+            postcode: inputReq.postcode,
+          });
           return updatedEstate;
         } catch (error) {
           throw new Error(error.message);
