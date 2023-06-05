@@ -31,31 +31,36 @@ class EstateService {
           throw new Error(error.message);
         }
     }
-    async updateEstate(estateId, inputReq) {
+    async updateEstate(estateId, estate_user_id,inputReq) {
         try {
-          const estate = await Estate.findByPk(estateId);
+          const estate = await Estate.findOne({
+            where: {
+              estate_id: estateId,
+              estate_user_id: estate_user_id,
+            },
+          });
           if (!estate) {
             throw new Error('Estate not found');
           }
-          const updatedEstate = await estate.update({
-            estate_name: inputReq.estate_name,
-            estate_type: inputReq.estate_type,
-            estate_price: inputReq.estate_price,
-            estate_area: inputReq.estate_area,
-            estate_bedrooms: inputReq.estate_bedrooms,
-            estate_bathrooms: inputReq.estate_bathrooms,
-            estate_garage: inputReq.estate_garage,
-            estate_description: inputReq.estate_description,
-            estate_image: JSON.stringify(inputReq.estate_image),
-            estate_verify: inputReq.estate_verify,
-            lat: inputReq.lat,
-            lng: inputReq.lng,
-            address: inputReq.address,
-            province: inputReq.province,
-            state: inputReq.state,
-            districts: inputReq.districts,
-            postcode: inputReq.postcode,
-          });
+          
+            estate.estate_name = inputReq.estate_name,
+            estate.estate_type = inputReq.estate_type,
+            estate.estate_price = inputReq.estate_price,
+            estate.estate_area = inputReq.estate_area,
+            estate.estate_bedrooms = inputReq.estate_bedrooms,
+            estate.estate_bathrooms = inputReq.estate_bathrooms,
+            estate.estate_garage = inputReq.estate_garage,
+            estate.estate_description = inputReq.estate_description,
+            estate.estate_image = JSON.stringify(inputReq.estate_image),
+            estate.estate_verify = inputReq.estate_verify,
+            estate.lat = inputReq.lat,
+            estate.lng = inputReq.lng,
+            estate.address = inputReq.address,
+            estate.province = inputReq.province,
+            estate.state = inputReq.state,
+            estate.districts = inputReq.districts,
+            estate.postcode = inputReq.postcode,
+            await estate.save();
           return updatedEstate;
         } catch (error) {
           throw new Error(error.message);

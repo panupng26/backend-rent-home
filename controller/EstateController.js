@@ -22,7 +22,7 @@ exports.updateEstate = async (req, res) => {
         return res.status(400).json({ status: false, error: inputValidate.error });
     }
     try {
-      const estate = await estateService.updateEstate(estateId, estateData);
+      const estate = await estateService.updateEstate(estateId,req.user.user_id,estateData);
       return res.status(200).json({ status: true, message: 'Estate updated successfully', estate });
     } catch (error) {
       return res.status(500).json({ status: false, error: error.message });
