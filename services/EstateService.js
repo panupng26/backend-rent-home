@@ -61,7 +61,7 @@ class EstateService {
             estate.districts = inputReq.districts,
             estate.postcode = inputReq.postcode,
             await estate.save();
-          return updatedEstate;
+            return estate;
         } catch (error) {
           throw new Error(error.message);
         }
