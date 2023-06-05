@@ -67,7 +67,7 @@ exports.uploadImages = async (req, res) => {
     // Call the `upload` function to handle the file upload
     upload(req, res, (err) => {
       if (err) {
-        return res.status(400).json({ error: err.message });
+        return res.status(400).json({ status: false, error: err.message });
       } else {
         // If upload is successful, return the file paths in the response
         const filepaths = req.files.map((file) => file.path);
@@ -75,6 +75,6 @@ exports.uploadImages = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ status:false, error: error.message });
   }
 };

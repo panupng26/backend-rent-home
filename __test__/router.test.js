@@ -1,38 +1,60 @@
 const request = require('supertest');
 const app = require('../app');
-describe('my asynchronous test', () => {
-    test('should log a message after a 1 second delay', () => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          console.log('asynchronous operation complete');
-          resolve();
-        }, 3000);
-      });
-    });
-  });
 
-describe('Report Router Test', () => {
-  it('Should create a report with 201 status code', async () => {
-    //   expect.assertions(2); // Expect 2 assertions to be executed
-  
-      const res = await request(app)
-        .post('/report/1')
-        .send({
-          user_id: 1,
-          description: 'Test Report'
-        });
-      expect(res.statusCode).toEqual(201);
-      expect(res.body).toHaveProperty('report.report_id');
-  });
-
-  it('Should return 400 if id is not a number', async () => {
+describe('Starting Server', () => {
+  it('Status 200', async () => {
     const res = await request(app)
-      .post('/report/invalid-id')
-      .send({
-        user_id: 1,
-        description: 'Test Report'
-      });
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toHaveProperty('error');
+    .get('/')
+    expect(res.statusCode).toEqual(200)
   });
+  it('Should return Finish server', async () => {
+    const res = await request(app)
+    .get('/')
+    expect(res.body.message).toEqual('Finish server')
+  })
 });
+
+describe('Route /register', () => {
+  let registeredUserId;
+  // it('Should Register 200', async () => {
+  //   const userData = {
+  //     first_name: 'John',
+  //     last_name: 'Smith',
+  //     email: 'john@smith.com',
+  //     password: 'password',
+  //     phone: '123456'
+  //   };
+
+  //   const res = await request(app)
+  //     .post('/register')
+  //     .send(userData);
+
+  //   expect(res.statusCode).toEqual(201);
+  //   expect(res.body).toHaveProperty('user');
+
+  //   registeredUserId = res.body.user.id;
+  // }) 
+  it('Should Already Register 409', async () => {
+    const userData = {
+      first_name: 'John',
+      last_name: 'Smith',
+      email: 'john@smith.com',
+      password: 'password',
+      phone: '123456'
+    };
+
+    const res = await request(app)
+      .post('/register')
+      .send(userData);
+
+    expect(res.statusCode).toEqual(409);
+    expect(res.body.message).toBe("User already exists. Please Login");
+  })
+});
+
+afterAll(async () => {
+  // if(registeredUserId) {
+  //   await deleteRegisteredUser(registeredUserId);
+  // }
+  console.log('cleaning')
+})
